@@ -17,3 +17,11 @@ class productManager {
   let buscadoProducts = buscarProducts(2);
   console.log(buscadoProducts)
 }
+
+let products = []
+let idContador = 0
+function addProducts(obj) {
+  obj.id = idContador
+  idContador++
+  products.push(obj)
+}
