@@ -1,5 +1,5 @@
 import http, { request } from 'http'
-
+import { response } from "express";
 class productManager {
   constructor() {
     this.products = [];
@@ -27,6 +27,6 @@ function addProducts(obj) {
   idContador++
   products.push(obj)
 }
-const servidor = http.createServer((request) =>{
-  response.end('mi primer hola mundo')
+const servidor = http.createServer((request,response) =>{
+  response.end('')
 })
