@@ -1,3 +1,5 @@
+import http, { request } from 'http'
+
 class productManager {
   constructor() {
     this.products = [];
@@ -25,3 +27,6 @@ function addProducts(obj) {
   idContador++
   products.push(obj)
 }
+const servidor = http.createServer((request) =>{
+  response.end('mi primer hola mundo')
+})
