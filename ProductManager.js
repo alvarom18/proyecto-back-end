@@ -1,32 +1,39 @@
-import http, { request } from 'http'
-import { response } from "express";
-class productManager {
-  constructor() {
+import { request, response } from "express";
+
+class ProductManager {
+  constructor(products) {
     this.products = [];
   }
-
-  getProducts = () => {
-    return this.products;
-  };
-  addProducts = (title, description, price, imagen, code, (stock = 25)) => {
-    const producto ={
-        
+  addProduct(product) {
+    if (
+      product.title &&
+      product.description &&
+      product.price &&
+      product.id &&
+      product.image &&
+      product.stock
+    ) {
+      this.products.push(product);
+    } else {
+      throw new Error("El producto no tiene los requerimientos");
     }
   }
-  function buscarProducts (id){
-    return productManager.find(producto => producto.id === id);
+  getProduts() {
+    return this.products;
   }
-  let buscadoProducts = buscarProducts(2);
-  console.log(buscadoProducts)
-}
 
-let products = []
-let idContador = 0
-function addProducts(obj) {
-  obj.id = idContador
-  idContador++
-  products.push(obj)
+  getProdutsById() {
+    let product = this.products.fild((p) => p.id === id);
+    return product || null;
+  }
 }
-const servidor = http.createServer((request,response) =>{
-  response.end('')
-})
+const express = require("express");
+const app = express();
+const port = 8080;
+const ProductsRouter = require("./products");
+const cartRouter = require("./carts");
+app.use("/api/products", ProductsRouter);
+app.use("/api/cart", cartRouter);
+app.listen(port, () => {
+  console.log(`servidor ${port}`);
+});
