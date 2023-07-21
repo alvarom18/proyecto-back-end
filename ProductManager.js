@@ -38,7 +38,6 @@ app.listen(port, () => {
   console.log(`servidor ${port}`);
 });
 
-// Importar mongoose
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://<user>:<clave>@<host>:<port>/ecommerce", {
@@ -75,3 +74,43 @@ module.exports = {
   Message,
   Product,
 };
+
+function getProducts() {
+  return [
+    { id: 1, name: "Samsung Galaxy S22", price: 1000 },
+    { id: 2, name: "Samsung Galaxy S22 Ultra", price: 1100 },
+    { id: 3, name: "Iphone 13", price: 1400 },
+  ];
+}
+
+function sortProducts(products, sort) {}
+
+function filterProducts(products, query) {}
+
+function paginateProducts(products, limit, page) {}
+
+const express = require("express");
+const router = express.Router();
+
+router.get("/", (req, res) => {
+  const limit = req.query.limit;
+  const page = req.query.page;
+  const sort = req.query.sort;
+  const query = req.query.query;
+
+  let products = getProducts();
+
+  if (sort) {
+    products = sortProducts(products, sort);
+  }
+
+  if (query) {
+    products = filterProducts(products, query);
+  }
+
+  products = paginateProducts(products, limit, page);
+
+  res.json(products);
+});
+
+module.exports = router;
