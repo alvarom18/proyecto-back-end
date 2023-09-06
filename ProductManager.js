@@ -114,3 +114,53 @@ router.get("/", (req, res) => {
 });
 
 module.exports = router;
+
+const express = require("express");
+const passport = require("passport");
+const currentStrategy = require("./currentStrategy");
+
+const app = express();
+
+app.use(passport.initialize());
+
+passport.use(currentStrategy);
+
+const checkRole = (role) => {
+  return (req, res, next) => {
+    const user = req.user;
+
+    if (user && user.role === role) {
+      next();
+    } else {
+      res.status(403).send("No tienes permiso para acceder a este recurso");
+    }
+  };
+};
+
+app.get("/", (req, res) => {
+  res.send("Bienvenido a la aplicación");
+});
+
+app.get(
+  "/profile",
+  passport.authenticate("current", { session: false }),
+  checkRole("user"),
+  (req, res) => {
+    const user = req.user;
+
+    res.send(user);
+  }
+);
+
+app.get(
+  "/admin",
+  passport.authenticate("current", { session: false }),
+  checkRole("admin"),
+  (req, res) => {
+    res.send("Acceso concedido al panel administrativo");
+  }
+);
+
+app.listen(3000, () => {
+  console.log("Servidor escuchando en el puerto 3000");
+});
